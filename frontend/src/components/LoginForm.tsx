@@ -1,17 +1,30 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import backgroundImage from "../assets/background.jpeg";
 
 export const LoginForm = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(username, password);
+    setIsLoading(true);
+    try {
+      await login(username, password);
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    } catch (error: unknown) {
+      toast.error("Login failed. Please check your credentials.");
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
   return (
     <div className="flex h-screen">
       <div className="hidden lg:block lg:w-1/2">
@@ -44,8 +57,9 @@ export const LoginForm = () => {
             <button
               type="submit"
               className="w-full bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700 transition duration-300"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
           <a

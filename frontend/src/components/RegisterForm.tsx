@@ -1,15 +1,35 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import backgroundImage from "../assets/background.jpeg";
-
 export const RegisterForm = () => {
-  const { register } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register(username, password);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
+
+      if (response.ok) {
+        navigate("/login");
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("An error occurred during registration");
+    }
   };
 
   return (
