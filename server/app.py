@@ -6,13 +6,14 @@ from image import image_bp
 from config import Config
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask import jsonify
+from models import User
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app, resources={r"/*": {"origins": "https://image-gallery-dan.vercel.app"}})
+CORS(app, resources={r"/*": {"origins": ["https://image-gallery-dan.vercel.app", "http://localhost:5173"]}})
 migrate = Migrate(app, db)
-
 
 db.init_app(app)
 jwt = JWTManager(app)
@@ -25,9 +26,6 @@ with app.app_context():
     
 if __name__ == '__main__':
     app.run(debug=False)
-
-from flask import jsonify
-from models import User
 
 @app.route('/test-db')
 def test_db():
