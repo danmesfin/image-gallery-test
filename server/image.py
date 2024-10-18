@@ -5,9 +5,15 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import Image, db, User
 from config import Config
 from supabase import create_client, Client
+import os
+from openai import OpenAI
 from config import Config
 
 supabase: Client = create_client(Config.SUPABASE_URL, Config.SUPABASE_KEY)
+
+client = OpenAI(
+    api_key=Config.OPENAI_API_KEY
+)
 
 
 image_bp = Blueprint('image', __name__)
@@ -78,3 +84,25 @@ def upload_image_supabase():
             return jsonify(message="Image uploaded successfully", filename=filename, url=file_url), 200
         else:
             return jsonify(message="Upload to Supabase failed"), 500
+
+def analyze_image(image_url):
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What's in this image?"},
+                    {"type": "image_url", "image_url": image_url},
+                ],
+            }
+        ],
+    )
+    return response.choices[0].message['content']
+
+@image_bp.route('/analyze/<int:image_id>', methods=['GET'])
+@jwt_required()
+def get_image_analysis(image_id):
+    image = Image.query.get_or_404(image_id)
+    analysis = analyze_image(image.url)
+    return jsonify(analysis=analysis), 200
