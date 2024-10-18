@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://image-gallery-dan.vercel.app"}})
 migrate = Migrate(app, db)
 
 
