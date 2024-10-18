@@ -37,6 +37,7 @@ const MyImages = () => {
             {images.map((image) => (
               <ImageCard
                 key={image.id}
+                id={image.id}
                 imageSrc={image.src}
                 title={image.title}
                 uploadDate={image.uploadDate}
