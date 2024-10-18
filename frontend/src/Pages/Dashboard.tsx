@@ -53,6 +53,7 @@ const Dashboard = () => {
             {images.map((image: Image) => (
               <ImageCard
                 key={image.id}
+                id={image.id}
                 imageSrc={image.url}
                 title={
                   image.filename.length > 10
