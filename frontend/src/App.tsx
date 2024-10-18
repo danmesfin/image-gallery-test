@@ -10,7 +10,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import LandingPage from "./Pages/LandingPage";
 import Dashboard from "./Pages/Dashboard";
 import UploadImage from "./Pages/UploadImage";
-import MyImages from "./Pages/MyImages";
+import ImageAnalyzePage from "./Pages/ImageAnalyzePage";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -48,10 +48,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/myimages"
+        path="/analyze"
         element={
           <ProtectedRoute>
-            <MyImages />
+            <ImageAnalyzePage />
           </ProtectedRoute>
         }
       />
