@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { FiHome, FiUpload, FiImage, FiSettings } from "react-icons/fi";
+import { FiHome, FiUpload } from "react-icons/fi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -12,8 +12,8 @@ const Sidebar = () => {
   const navItems = [
     { path: "/dashboard", label: "Dashboard", icon: FiHome },
     { path: "/upload", label: "Upload Image", icon: FiUpload },
-    { path: "/", label: "My Images", icon: FiImage },
-    { path: "/", label: "Settings", icon: FiSettings },
+    // { path: "/", label: "My Images", icon: FiImage },
+    // { path: "/", label: "Settings", icon: FiSettings },
   ];
 
   const handleLogout = () => {
