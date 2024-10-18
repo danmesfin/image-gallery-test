@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100">
-      <nav className="flex justify-between items-center w-full p-6 bg-white shadow-md">
-        <div className="text-3xl font-bold text-indigo-600">IMAGE GALLERY</div>
+      <nav className="flex justify-between w-full p-4 z-50">
+        <div className="text-2xl font-bold">IMAGE GALLERY</div>
         <div>
           <Link
             to="/login"
@@ -84,7 +84,10 @@ const LandingPage = () => {
 
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-6 text-center">
-          <p>&copy; 2023 Image Gallery. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} Image Gallery. All rights
+            reserved.
+          </p>
         </div>
       </footer>
 
