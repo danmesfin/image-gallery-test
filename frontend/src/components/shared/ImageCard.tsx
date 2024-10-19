@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { FiSearch } from "react-icons/fi";
 import AnalysisModal from "./AnalysisModal";
-
+import { FaWandMagicSparkles } from "react-icons/fa6";
 const ImageCard = ({
   id,
   imageSrc,
@@ -57,7 +56,9 @@ const ImageCard = ({
             className="absolute bottom-2 right-2 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
             disabled={isAnalyzing}
           >
-            <FiSearch className={isAnalyzing ? "animate-spin" : ""} />
+            <FaWandMagicSparkles
+              className={isAnalyzing ? "animate-spin" : ""}
+            />
           </button>
         </div>
         <div className="p-4">
