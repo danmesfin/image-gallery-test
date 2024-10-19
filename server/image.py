@@ -2,8 +2,8 @@ import uuid
 import boto3
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from server.src.models import Image, db
-from server.src.config import Config
+from models import Image, db
+from config import Config
 from supabase import create_client, Client
 import requests
 from openai import OpenAI
