@@ -1,13 +1,13 @@
 from flask import Flask
-from models import db
+from server.src.models import db
 from flask_jwt_extended import JWTManager
-from auth import auth_bp
-from image import image_bp
-from config import Config
+from server.src.auth import auth_bp
+from server.src.image import image_bp
+from server.src.config import Config
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask import jsonify
-from models import User
+from server.src.models import User
 
 app = Flask(__name__)
 app.config.from_object(Config)
