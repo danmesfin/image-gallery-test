@@ -39,6 +39,10 @@ const ImageCard = ({
     setIsAnalyzing(false);
   };
 
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <>
       <div className="relative bg-white rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
@@ -63,11 +67,12 @@ const ImageCard = ({
       </div>
       <AnalysisModal
         isOpen={showModal}
-        onClose={() => setShowModal(false)}
+        onToggle={toggleModal}
         imageSrc={imageSrc}
         title={title}
         uploadDate={uploadDate}
         analysis={analysis}
+        isLoading={isAnalyzing}
       />
     </>
   );
