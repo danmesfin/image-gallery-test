@@ -2,12 +2,14 @@ import uuid
 import boto3
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Image, db, User
+from models import Image, db
 from config import Config
 from supabase import create_client, Client
-import os
+import requests
 from openai import OpenAI
-from config import Config
+import uuid
+import os
+from urllib.parse import quote, unquote
 
 supabase: Client = create_client(Config.SUPABASE_URL, Config.SUPABASE_KEY)
 
@@ -15,6 +17,7 @@ client = OpenAI(
     api_key=Config.OPENAI_API_KEY
 )
 
+image_bp = Blueprint('image', __name__)
 
 image_bp = Blueprint('image', __name__)
 s3 = boto3.client(
@@ -85,7 +88,48 @@ def upload_image_supabase():
         else:
             return jsonify(message="Upload to Supabase failed"), 500
 
-def analyze_image(image_url):
+@image_bp.route('/analyze', methods=['POST'])
+@jwt_required()
+def analyze_image():
+    user_id = get_jwt_identity()
+    
+    if 'file' in request.files:
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify(message="No selected file"), 400
+        
+        # Replace spaces and special characters in the filename
+        base_name = os.path.splitext(file.filename)[0]
+        file_extension = os.path.splitext(file.filename)[1]
+        sanitized_base_name = ''.join(c if c.isalnum() else '-' for c in base_name)
+        filename = f"{uuid.uuid4()}_{sanitized_base_name}{file_extension}"
+        
+        file_content = file.read()
+        
+        # Upload to Supabase Storage
+        result = supabase.storage.from_(Config.SUPABASE_BUCKET).upload(filename, file_content)
+        
+        if result:
+            file_url = supabase.storage.from_(Config.SUPABASE_BUCKET).get_public_url(filename)
+            
+            # Save image info to database
+            image = Image(filename=filename, user_id=user_id, url=file_url)
+            db.session.add(image)
+            db.session.commit()
+        else:
+            return jsonify(message="Upload to Supabase failed"), 500
+    
+    elif 'image_url' in request.form:
+        file_url = request.form['image_url']
+    
+    else:
+        return jsonify(message="No file or URL provided"), 400
+
+    # Use the original URL without additional encoding
+    analysis = analyze_image_with_openai(file_url)
+    
+    return jsonify(analysis=analysis), 200
+def analyze_image_with_openai(image_url):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -103,10 +147,9 @@ def analyze_image(image_url):
     )
     return response.choices[0].message.content
 
-
 @image_bp.route('/analyze/<int:image_id>', methods=['GET'])
 @jwt_required()
 def get_image_analysis(image_id):
     image = Image.query.get_or_404(image_id)
-    analysis = analyze_image(image.url)
+    analysis = analyze_image_with_openai(image.url)
     return jsonify(analysis=analysis), 200
