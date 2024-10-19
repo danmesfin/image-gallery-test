@@ -93,12 +93,16 @@ def analyze_image(image_url):
                 "role": "user",
                 "content": [
                     {"type": "text", "text": "What's in this image?"},
-                    {"type": "image_url", "image_url": image_url},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"{image_url}"}
+                    },
                 ],
             }
         ],
     )
-    return response.choices[0].message['content']
+    return response.choices[0].message.content
+
 
 @image_bp.route('/analyze/<int:image_id>', methods=['GET'])
 @jwt_required()
