@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
 import ImageCard from "../../components/shared/ImageCard";
+import Layout from "../../components/Layout";
 
 interface Image {
   id: number;
@@ -42,38 +41,34 @@ const Dashboard = () => {
   }, [token]);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Navbar />
-        <main className="p-6 flex-1">
-          <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-          <p className="mb-4">Total Images: {imageCount}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {images.map((image: Image) => (
-              <ImageCard
-                key={image.id}
-                id={image.id}
-                imageSrc={image.url}
-                title={
-                  image.filename.length > 10
-                    ? image.filename.substring(0, 10) + "..."
-                    : image.filename
+    <Layout>
+      <main className="p-6 flex-1">
+        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+        <p className="mb-4">Total Images: {imageCount}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {images.map((image: Image) => (
+            <ImageCard
+              key={image.id}
+              id={image.id}
+              imageSrc={image.url}
+              title={
+                image.filename.length > 10
+                  ? image.filename.substring(0, 10) + "..."
+                  : image.filename
+              }
+              uploadDate={new Date(image.upload_date).toLocaleDateString(
+                "en-US",
+                {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
                 }
-                uploadDate={new Date(image.upload_date).toLocaleDateString(
-                  "en-US",
-                  {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }
-                )}
-              />
-            ))}
-          </div>
-        </main>
-      </div>
-    </div>
+              )}
+            />
+          ))}
+        </div>
+      </main>
+    </Layout>
   );
 };
 
