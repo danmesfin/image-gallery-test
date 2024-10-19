@@ -1,4 +1,4 @@
-# AI-Powered Image Gallery
+# AI-Powered Image Gallery[https://image-gallery-dan.vercel.app/]
 
 ## Overview
 
@@ -31,3 +31,9 @@ This project is an AI-powered image gallery application that allows users to upl
 - AWS account with S3 bucket
 - Supabase account
 - OpenAI API key
+
+## Usage
+
+1. Register or log in to your account
+2. Upload images (stored in AWS S3 or Supabase) or provide image URLs for analysis
+3. View your image gallery and click on images to see AI-generated analysis
