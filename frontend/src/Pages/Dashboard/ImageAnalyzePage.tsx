@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import { useAuth } from "../../context/AuthContext";
+import Navbar from "../../components/Navbar";
+import Sidebar from "../../components/Sidebar";
 import { FiUpload, FiLink } from "react-icons/fi";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 const ImageAnalyzePage = () => {

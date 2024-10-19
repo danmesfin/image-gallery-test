@@ -7,10 +7,10 @@ import {
 import { LoginForm } from "./components/LoginForm";
 import { RegisterForm } from "./components/RegisterForm";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import LandingPage from "./Pages/LandingPage";
-import Dashboard from "./Pages/Dashboard";
-import UploadImage from "./Pages/UploadImage";
-import ImageAnalyzePage from "./Pages/ImageAnalyzePage";
+import LandingPage from "./Pages/Marketing/Home";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import UploadImage from "./Pages/Dashboard/UploadImage";
+import ImageAnalyzePage from "./Pages/Dashboard/ImageAnalyzePage";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
